@@ -25,40 +25,52 @@ public class BinaryTreeTest
             Console.WriteLine("\t8. Exit");
 
             Console.Write("Choice : ");
-            int choice = Convert.ToInt32(Console.ReadLine());
+            int choice;
+            try {
+
+             choice = Convert.ToInt32(Console.ReadLine());
+            } catch (System.FormatException) {
+                Console.WriteLine("Invalid option, please try again");
+                continue;
+            }
 
             switch (choice) {
                 case 1 :
-                    Console.WriteLine("Enter values to add to the binary tree (enter 'finish' to finish):");
+                    Console.WriteLine("Enter values to add to the binary tree or 'exit' to finish:");
  
                 while (true)
                 {
-                    string input = Console.ReadLine();
+                    string? input = Console.ReadLine();
+                    if (input == null)
+                {
+                    Console.WriteLine("Error: Input is null.");
+                    break;
+                }
                 
-                    if (input.ToLower() == "finish")
+                    if (input.ToLower() == "exit")
                         break;
-                
+                    
                     if (int.TryParse(input, out int value))
                     {
                         binaryTree.Insert(value);
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input. Please enter a valid integer or 'done' to finish.");
+                        Console.WriteLine("Invalid input. Please enter a valid integer or 'exit' to finish.");
                     }
                 }
                 break;
 
                 case 2 : 
-                Console.WriteLine("Inorder Traversal:");
-                        binaryTree.InorderTraversal();
-                        Console.WriteLine();
-                        break;
+                    Console.WriteLine("Inorder Traversal:");
+                    binaryTree.InorderTraversal();
+                    Console.WriteLine();
+                    break;
                 case 3 : 
                     Console.WriteLine("Postorder Traversal:");
-                        binaryTree.PostorderTraversal();
-                        Console.WriteLine();
-                        break;
+                    binaryTree.PostorderTraversal();
+                    Console.WriteLine();
+                    break;
 
                 case 4 : 
                     Console.Write("Enter the value to search: ");
@@ -98,7 +110,10 @@ public class BinaryTreeTest
 
                 case 7 :
                     Console.Write("Enter the value to delete: ");
+                    try{
                         int deleteValue = Convert.ToInt32(Console.ReadLine());
+                    
+                    
                         int? foundValue = binaryTree.Search(deleteValue);
 
                         if (foundValue.HasValue)
@@ -110,6 +125,11 @@ public class BinaryTreeTest
                         {
                             Console.WriteLine($"Value {foundValue} not found in the binary tree. No deletion performed.");
                         }
+                    }
+                        catch (System.FormatException) {
+                        Console.WriteLine("Invalid option, please try again");
+                        continue;
+                    }
                         break;
 
 
@@ -133,33 +153,3 @@ public class BinaryTreeTest
 
 
 
-// public class BinarySearchTreeTest
-// {
-//     static void Main()
-//     {
-//         BinaryTree<int> bst1 = new BinaryTree<int>(54);
-//         bst1.Insert(25);
-//         bst1.Insert(12);
-//         bst1.Insert(43);
-//         bst1.Insert(23);
-//         bst1.Insert(60);
-//         bst1.Insert(90);
-//         bst1.Insert(15);
-
-//          Console.WriteLine("Inorder Traversal:");
-//         bst1.InorderTraversal();
-
-//          Console.WriteLine("Postorder Traversal:");
-//         bst1.PostorderTraversal();
-
-//         // bst1.Search(43);
-//         Console.WriteLine("value: {0}", bst1.Search(100));
-//         bst1.InorderTraversal();
-
-//         bst1.Delete(43);
-//         Console.WriteLine("Inorder Traversal after deletion:");
-//         bst1.InorderTraversal();
-
-
-//     }
-//     }

@@ -37,7 +37,7 @@ public class BinaryTree<T> where T : IComparable
         it inserts the new value to the left if the condition is true
         */
          
-        if (value.CompareTo(currentNode.Value) < 0)
+        if (value.Equals(currentNode.Value))
         {
             if (currentNode.Left == null)
             {
@@ -76,6 +76,7 @@ public class BinaryTree<T> where T : IComparable
         }
         catch (NullReferenceException)
         {
+            Console.WriteLine("Value does not exist");
             return default;
         }
     }
@@ -84,10 +85,10 @@ public class BinaryTree<T> where T : IComparable
         if (currentNode == null){
             return null;
         }
-        else if(searchValue.CompareTo(currentNode.Value) == 0){
+        else if(searchValue.Equals(currentNode.Value)){
             return currentNode;
         }
-        else if(searchValue.CompareTo(currentNode.Value) < 0){
+        else if(searchValue.Equals(currentNode.Value)){
            return SearchRecursively(currentNode.Left, searchValue);
         }
         else{
@@ -137,10 +138,10 @@ public class BinaryTree<T> where T : IComparable
             return currentNode;
         }
         // a recursive call to go search for the node in left subtree if value being inserted is less than the root
-        if (value.CompareTo(currentNode.Value) < 0){
+        if (value.Equals(currentNode.Value) ){
         currentNode.Left = Delete(currentNode.Left, value);
         }
-        else if (value.CompareTo(currentNode.Value) > 0){
+        else if (value.Equals(currentNode.Value) ){
             currentNode.Right = Delete(currentNode.Right, value);
         }
         else
@@ -191,8 +192,8 @@ public class BinaryTree<T> where T : IComparable
                 return default;
             }
 
-            if ((currentNode.Left != null && currentNode.Left.Value.CompareTo(value) == 0) ||
-                (currentNode.Right != null && currentNode.Right.Value.CompareTo(value) == 0))
+            if (currentNode.Left != null && currentNode.Left.Value.Equals(value)  ||
+                (currentNode.Right != null && currentNode.Right.Value.Equals(value)))
             {
                 return currentNode.Value;
             }
@@ -207,6 +208,7 @@ public class BinaryTree<T> where T : IComparable
             return parent;
         }
 
+
         public void GetChildren(T value)
         {
             GetChildren(root, value);
@@ -216,23 +218,33 @@ public class BinaryTree<T> where T : IComparable
         {
             if (currentNode != null)
             {
-                if (currentNode.Value.CompareTo(value) == 0)
+                if (currentNode.Value.Equals(value))
                 {
                     if (currentNode.Left != null)
                     {
                         Console.WriteLine("Left child: " + currentNode.Left.Value);
                     }
-
+                    else
+                    {
+                        Console.WriteLine("No left child");
+                    }
+        
                     if (currentNode.Right != null)
                     {
                         Console.WriteLine("Right child: " + currentNode.Right.Value);
                     }
-
+                    else
+                    {
+                        Console.WriteLine("No right child");
+                    }
+        
                     return;
                 }
-
+        
+                
+            }
                 GetChildren(currentNode.Left, value);
                 GetChildren(currentNode.Right, value);
-            }
+
         }
 }
