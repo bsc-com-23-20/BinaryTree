@@ -1,9 +1,8 @@
 using System;
-
-public class BinaryTree<T> where T : IComparable
+// using System.Runtime.Serialization;
+public class BinaryTree<T> where T : IComparable<T>
 {
     Node<T>? root;
-    
     public BinaryTree()
     {
         root = null;
@@ -13,7 +12,9 @@ public class BinaryTree<T> where T : IComparable
     {
         root = new Node<T>(value);
     }
-     
+    /*
+    inserts a new value in the binary tree
+    */ 
     public void Insert(T value)
     {
         if (root == null) 
@@ -25,10 +26,10 @@ public class BinaryTree<T> where T : IComparable
             InsertRecursively(value, root);
         }
     }
-    
     private void InsertRecursively(T value, Node<T> currentNode)
     {
-         
+        
+       
         if (value.CompareTo(currentNode.Value) < 0)
         {
             if (currentNode.Left == null)
@@ -40,6 +41,7 @@ public class BinaryTree<T> where T : IComparable
                 InsertRecursively(value, currentNode.Left);
             }
         }
+       
         else 
         {
             if (currentNode.Right == null)
@@ -53,8 +55,8 @@ public class BinaryTree<T> where T : IComparable
         }
     }
 
- 
-    public T? Search(T value){
+   
+    public T? Search(string value){
         try
         {
         Node<T>? node = SearchRecursively(root, value) ?? throw new NullReferenceException();
@@ -62,24 +64,25 @@ public class BinaryTree<T> where T : IComparable
         }
         catch (NullReferenceException)
         {
-            Console.WriteLine("Value does not exist");
+            Console.WriteLine("Value not found");
             return default;
         }
     }
     
-    public Node<T>? SearchRecursively(Node<T>? currentNode, T searchValue){
-        if (currentNode == null){
-            return null;
-        }
-        else if(searchValue.CompareTo(currentNode.Value) == 0){
+    public Node<T>? SearchRecursively(Node<T>? currentNode, string searchValue)
+    {
+        if (currentNode == null || currentNode.Value.Equals(searchValue))
+        {
             return currentNode;
         }
-        else if(searchValue.CompareTo(currentNode.Value) < 0){
-           return SearchRecursively(currentNode.Left, searchValue);
+
+        Node<T>? left = SearchRecursively(currentNode.Left, searchValue);
+        if (left is not null)
+        {
+            return left;
         }
-        else{
-           return  SearchRecursively(currentNode.Right, searchValue);
-        }   
+
+        return SearchRecursively(currentNode.Right, searchValue);
     }
 
     public void InorderTraversal()
@@ -87,16 +90,14 @@ public class BinaryTree<T> where T : IComparable
         InorderTraversal(root);
         Console.WriteLine(); 
     }
-
     public void InorderTraversal(Node<T>? currentNode){
         if (currentNode == null){
             return;
         }
         InorderTraversal(currentNode.Left); 
-        Console.Write($"{currentNode.Value}   "); 
+        Console.Write($"{currentNode.Value}"); 
         InorderTraversal(currentNode.Right);
     }
-
 
     public void PostorderTraversal()
     {
@@ -105,28 +106,27 @@ public class BinaryTree<T> where T : IComparable
         Console.WriteLine();
     } 
     }
-
     public void PostorderTraversal(Node<T>? currentNode){
         if (currentNode == null){
             return;
         }
         PostorderTraversal(currentNode.Left);  
         PostorderTraversal(currentNode.Right);
-        Console.Write($"{currentNode.Value}   "); 
+        Console.Write($"{currentNode.Value}"); 
     }
 
     public void Delete( T value){
         root = Delete(root, value);
     }
-
     Node<T>? Delete(Node<T>? currentNode, T value){
         if (currentNode == null){
             return currentNode;
         }
-        if (value.CompareTo(currentNode.Value) < 0){
+        
+        if (value.Equals(currentNode.Value)){
         currentNode.Left = Delete(currentNode.Left, value);
         }
-        else if (value.CompareTo(currentNode.Value) > 0){
+        else if (value.Equals(currentNode.Value)){
             currentNode.Right = Delete(currentNode.Right, value);
         }
         else
@@ -163,7 +163,7 @@ public class BinaryTree<T> where T : IComparable
                 return currentNode;
             }
         return FindMinimum(currentNode.Left);
-        }
+        }  
 
         public T? GetParent(T value)
         {
@@ -187,11 +187,6 @@ public class BinaryTree<T> where T : IComparable
             }
 
             Node<T>? parentLeft = GetParentHandler(currentNode.Left, value);
-            // if (parent != null)
-            // {
-            //     return parent;
-            // }
-
             Node<T>? parentRight = GetParentHandler(currentNode.Right, value);
             return parentLeft ?? parentRight;
         }
@@ -229,8 +224,7 @@ public class BinaryTree<T> where T : IComparable
 
                 GetChildren(currentNode.Left, value);
                 GetChildren(currentNode.Right, value);
-           
-            }
                 
-        }
+            }
+        }         
 }
