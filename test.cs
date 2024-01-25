@@ -5,7 +5,7 @@ public class BinaryTreeTest
         BinaryTree<int> binaryTree = new BinaryTree<int>();
  
 
-    Console.WriteLine("Choose what you would like to do below");
+    Console.WriteLine("Welcome to Binary Tree Implementation \nChoose what you would like to do below");
     Console.WriteLine("\n______________________________________________________________________");
 	
  
@@ -74,7 +74,15 @@ public class BinaryTreeTest
 
                 case 4 : 
                     Console.Write("Enter the value to search: ");
-                    int searchValue = Convert.ToInt32(Console.ReadLine());
+                    int searchValue;
+                    try
+                    {
+                        searchValue = Convert.ToInt32(Console.ReadLine());
+                    } catch (System.FormatException)
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
                     int? found = binaryTree.Search(searchValue);
 
                     if (found.HasValue && found.Value == searchValue)
@@ -90,7 +98,11 @@ public class BinaryTreeTest
 
                 case 5 :
                     Console.Write("Enter the value to find its parent: ");
-                    int parentValue = Convert.ToInt32(Console.ReadLine());
+                    try
+                    {
+                       int parentValue = Convert.ToInt32(Console.ReadLine());
+                    
+
                     int? parent = binaryTree.GetParent(parentValue);
                     if (parent != null)
                     {
@@ -100,12 +112,24 @@ public class BinaryTreeTest
                     {
                         Console.WriteLine("Node not found or it is the root node.");
                     }
+                    }catch (System.FormatException)
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
                     break;
 
                 case 6 :
                     Console.Write("Enter the value to find its children: ");
-                    int childrenValue = Convert.ToInt32(Console.ReadLine());
-                    binaryTree.GetChildren(childrenValue);
+                    try{
+                        int childrenValue = Convert.ToInt32(Console.ReadLine());
+                        binaryTree.GetChildren(childrenValue);
+                     }
+                    catch (System.FormatException)
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
                     break;
 
                 case 7 :
@@ -135,8 +159,8 @@ public class BinaryTreeTest
 
 
                 case 8 : 
-                    Console.WriteLine("Bye! Bye!");
-                    control = false; // break the loop
+                    Console.WriteLine("terminating \nBye! Bye!");
+                    control = false; 
                     break;
 
                 default : Console.WriteLine("Invalid input.Enter a valid choice");
@@ -144,10 +168,7 @@ public class BinaryTreeTest
             }
        } 
     }
-    
-    
-
-    }
+}
 
 
 
